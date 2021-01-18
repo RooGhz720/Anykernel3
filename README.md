@@ -1,5 +1,5 @@
 # Anykernel3
-Kernel flasher for Ability
+Kernel flasher for Ability Miui
 ----------------------------------------------------------------------------------
 AnyKernel3 - Flashable Zip Template for Kernel Releases with Ramdisk Modifications
 ----------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
 device.name1=maguro
-device.name2=toro
+device.name2=surya
 device.name3=toroplus
 device.name4=tuna
 supported.versions=6.0 - 7.1.2
