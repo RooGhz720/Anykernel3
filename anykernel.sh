@@ -107,7 +107,7 @@ fi
 if [ ! -z "$(cat /data/local/aghisna | grep NSU )" ];then
     cleanup_n_update "aghisna.ksu" "0"
     cleanup_n_update "aghisna.su" "0"
-    ui_print "- Disable kernelSU (BETA)"
+    ui_print "- Disable kernelSU"
 else
     cleanup_n_update "aghisna.ksu" "1"
     cleanup_n_update "aghisna.su" "1"
