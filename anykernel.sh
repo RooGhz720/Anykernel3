@@ -83,16 +83,12 @@ cleanup_n_update() {
 # panel masbroo
 if [ ! -z "$(cat /data/local/aghisna | grep OSS )" ];then
     cleanup_n_update "aghisna.dimen" "0"
-    cleanup_n_update "aghisna.haptico" "1"
+    cleanup_n_update "aghisna.haptica" "1"
     ui_print "- AOSP/OSS/ARYAN vendor rom selected"
-elif [ ! -z "$(cat /data/local/aghisna | grep NEO )" ];then
-    cleanup_n_update "aghisna.dimen" "1"
-    cleanup_n_update "aghisna.haptico" "1"
-    ui_print "- MIUI VENDOR option selected"
 elif [ ! -z "$(cat /data/local/aghisna | grep MIUI )" ];then
     cleanup_n_update "aghisna.dimen" "1"
-    cleanup_n_update "aghisna.hapticm" "1"
-    ui_print "- MIUI/STOCK rom selected"
+    cleanup_n_update "aghisna.haptico" "1"
+    ui_print "- MIUI/STOCK/VENDOR option selected"
 else
     cleanup_n_update "aghisna.dimen" "1"
     cleanup_n_update "aghisna.haptico" "1"
