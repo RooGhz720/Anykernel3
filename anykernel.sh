@@ -55,6 +55,7 @@ gladi_resik() {
     patch_cmdline "aghisna.haptico" " "
     patch_cmdline "aghisna.nps" " "
     patch_cmdline "aghisna.su" " "
+    patch_cmdline "aghisna.dimen" " "
 }
 
 # ho ho hooo looks like you are looking for something '-'
@@ -82,7 +83,7 @@ cleanup_n_update() {
 }
 
 # hayoh mau ngapain?
-# panel masbroo
+# haptic masbroo
 if [ ! -z "$(cat /data/local/aghisna | grep H1 )" ];then
     cleanup_n_update "aghisna.haptica" "1"
     ui_print "- Haptic driver 1 selected"
@@ -95,10 +96,23 @@ else
     ui_print "- if u faced with haptic try change option"
 fi
 
+
+##### panel low high dimen
+if [ ! -z "$(cat /data/local/aghisna | grep OSS )" ];then
+    cleanup_n_update "aghisna.dimen" "0"
+    ui_print "- oss panel selected"
+elif [ ! -z "$(cat /data/local/aghisna | grep MIUI )" ];then
+    cleanup_n_update "aghisna.dimen" "1"
+    ui_print "- miui panel selected"
+else
+    cleanup_n_update "aghisna.dimen" "0"
+    ui_print "- panel dimens not selected, default option oss"
+fi
+
 ###### 90hz goes bug
 if [ ! -z "$(cat /data/local/aghisna | grep 90HZ )" ];then
     cleanup_n_update "aghisna.fps" "1"
-    ui_print "- Enable 90HZ option (120~90)"
+    ui_print "- Enable 90HZ option (120~90) bug!"
 else
     cleanup_n_update "aghisna.fps" "0"
 fi
