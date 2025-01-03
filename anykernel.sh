@@ -1,6 +1,15 @@
 # AnyKernel3 Ramdisk Mod Script
 # osm0sis @ xda-developers
 
+if [ -e /data/adb/magisk.db ]; then
+    ui_print "Magisk installed, you can disable KernelSU by adding 'NSU' to avoid conflict."
+    ui_print "Installation aborted due to potential conflict."
+    exit 1
+else
+    ui_print "Magisk not detected. Proceeding with installation..."
+fi
+
+
 ## AnyKernel setup
 # begin properties
 properties() { '
@@ -37,20 +46,13 @@ set_perm_recursive 0 0 750 750 $ramdisk/init* $ramdisk/sbin;
 ## AnyKernel boot install
 dump_boot;
 
-# magisk
-if [ -e /data/adb/magisk.db ]; then
-ui_print "Magisk installed, u can disable ksu by adding 'NSU' for avoid conflict"
-fi
-
 ## start custom  cmd
 #  hadeh :)
 gladi_resik() {
-    patch_cmdline "aghisna.dimen" " "
     patch_cmdline "aghisna.fps" " "
     patch_cmdline "aghisna.ksu" " "
     patch_cmdline "aghisna.hapticm" " "
     patch_cmdline "aghisna.haptico" " "
-    patch_cmdline "aghisna.haptica" " "
     patch_cmdline "aghisna.nps" " "
     patch_cmdline "aghisna.su" " "
 }
@@ -81,21 +83,19 @@ cleanup_n_update() {
 
 # hayoh mau ngapain?
 # panel masbroo
-if [ ! -z "$(cat /data/local/aghisna | grep OSS )" ];then
-    cleanup_n_update "aghisna.dimen" "0"
+if [ ! -z "$(cat /data/local/aghisna | grep H1 )" ];then
     cleanup_n_update "aghisna.haptica" "1"
-    ui_print "- AOSP/OSS/ARYAN vendor rom selected"
-elif [ ! -z "$(cat /data/local/aghisna | grep MIUI )" ];then
-    cleanup_n_update "aghisna.dimen" "1"
+    ui_print "- Haptic driver 1 selected"
+elif [ ! -z "$(cat /data/local/aghisna | grep H2 )" ];then
     cleanup_n_update "aghisna.haptico" "1"
-    ui_print "- MIUI/STOCK/VENDOR option selected"
+    ui_print "- Haptic driver 2 selected"
 else
-    cleanup_n_update "aghisna.dimen" "1"
-    cleanup_n_update "aghisna.haptico" "1"
-    ui_print "- Info rom not apply, MIUI vendor default"
+    cleanup_n_update "aghisna.haptica" "1"
+    ui_print "- Haptic driver not selected, default option 1"
+    ui_print "- if u faced with haptic try change option"
 fi
 
-######
+###### 90hz goes bug
 if [ ! -z "$(cat /data/local/aghisna | grep 90HZ )" ];then
     cleanup_n_update "aghisna.fps" "1"
     ui_print "- Enable 90HZ option (120~90)"
@@ -103,17 +103,17 @@ else
     cleanup_n_update "aghisna.fps" "0"
 fi
 
-######
+###### kernelSU
 if [ ! -z "$(cat /data/local/aghisna | grep NSU )" ];then
     cleanup_n_update "aghisna.ksu" "0"
     cleanup_n_update "aghisna.su" "0"
-    ui_print "- Disable kernelSU"
+    ui_print "- Disable kernelSU prebuilt"
 else
     cleanup_n_update "aghisna.ksu" "1"
     cleanup_n_update "aghisna.su" "1"
 fi
 
-######
+###### Proxymity virtual shit
 if [ ! -z "$(cat /data/local/aghisna | grep NPS )" ];then
     cleanup_n_update "aghisna.nps" "0"
     ui_print "- Disable proximity sensor"
@@ -124,19 +124,19 @@ fi
 # I know you're reading this, so what's your point here?
 # let's do something interesting
 
-if [ ! -z "$(ls $home | grep "mie-" )" ];then
-    if [ -f $home/mie-kuah ] && [ ! -z "$(cat /data/local/aghisna | grep BQ )" ];then
-        cp -af $home/mie-kuah $home/dtbo.img;
-        ui_print "- BQ2597x and PMIC driver charger selected";
-    elif [ -f $home/mie-ayam ] && [ ! -z "$(cat /data/local/aghisna | grep LN )" ];then
-        cp -af $home/mie-ayam $home/dtbo.img;
-        ui_print "- LN8000 driver charger selected";
-    else
-        cp -af $home/mie-kuah $home/dtbo.img;
-        ui_print "- charger driver not apply, BQ/PMIC default";
-    fi
-    rm -rf $home/mie-*;
-fi
+# if [ ! -z "$(ls $home | grep "mie-" )" ];then
+#     if [ -f $home/mie-kuah ] && [ ! -z "$(cat /data/local/aghisna | grep BQ )" ];then
+#        cp -af $home/mie-kuah $home/dtbo.img;
+#        ui_print "- BQ2597x and PMIC driver charger selected";
+#    elif [ -f $home/mie-ayam ] && [ ! -z "$(cat /data/local/aghisna | grep LN )" ];then
+#        cp -af $home/mie-ayam $home/dtbo.img;
+#        ui_print "- LN8000 driver charger selected";
+#    else
+#        cp -af $home/mie-kuah $home/dtbo.img;
+#        ui_print "- charger driver not apply, BQ/PMIC default";
+#    fi
+#    rm -rf $home/mie-*;
+# fi
 
 ## pembersih
 rm -rf /data/local/aghisna;
