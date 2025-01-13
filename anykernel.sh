@@ -21,158 +21,93 @@ do.cleanup=1
 do.cleanuponabort=0
 device.name1=sweet
 device.name2=sweetin
-supported.versions=11 - 14
+supported.versions=11 - 15
 supported.patchlevels=
 '; } # end properties
 
-# shell variables
-block=auto;
-is_slot_device=0;
-ramdisk_compression=auto;
-patch_vbmeta_flag=auto;
+### AnyKernel install
+## boot files attributes
+boot_attributes() {
+set_perm_recursive 0 0 755 644 $RAMDISK/*;
+set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
+} # end attributes
 
+# boot shell variables
+BLOCK=auto;
+IS_SLOT_DEVICE=0;
+RAMDISK_COMPRESSION=auto;
+PATCH_VBMETA_FLAG=auto;
 
-## AnyKernel methods (DO NOT CHANGE)
-# import patching functions/variables - see for reference
+# import functions/variables and setup patching - see for reference (DO NOT REMOVE)
 . tools/ak3-core.sh;
 
+# boot install
+dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_boot ramdisk
 
-## AnyKernel file attributes
-# set permissions/ownership for included ramdisk files
-set_perm_recursive 0 0 755 644 $ramdisk/*;
-set_perm_recursive 0 0 750 750 $ramdisk/init* $ramdisk/sbin;
+write_boot; # use flash_boot to skip ramdisk repack, e.g. for devices with init_boot ramdisk
 
-
-## AnyKernel boot install
-dump_boot;
-
-## start custom  cmd
-#  hadeh :)
-gladi_resik() {
-    patch_cmdline "aghisna.fps" " "
-    patch_cmdline "aghisna.ksu" " "
-    patch_cmdline "aghisna.hapticm" " "
-    patch_cmdline "aghisna.haptico" " "
-    patch_cmdline "aghisna.nps" " "
-    patch_cmdline "aghisna.su" " "
-    patch_cmdline "aghisna.dimen" " "
-}
-
-# ho ho hooo looks like you are looking for something '-'
-# I guess for sure you find out about what is below, right?  '-'
-# call function 10x biar seru
-X=10
-while [ $X != 0 ];
-do
-    gladi_resik
-    X=$(($X-1))
-done
-
-cleanup_n_update() {
-    local Yaitu="$1"
-    local Isinya="$2"
-    local X=10
-    while [ $X != 0 ];
-    do
-        patch_cmdline "$Yaitu" " "
-        X=$(($X-1))
-    done
-    if [ "$Isinya" != "null" ];then
-        patch_cmdline "$Yaitu" "$Yaitu=$Isinya"
-    fi
-}
-
-# hayoh mau ngapain?
-# haptic masbroo
-if [ ! -z "$(cat /data/local/aghisna | grep H1 )" ];then
-    cleanup_n_update "aghisna.haptica" "1"
-    ui_print "- Haptic driver 1 selected"
-elif [ ! -z "$(cat /data/local/aghisna | grep H2 )" ];then
-    cleanup_n_update "aghisna.haptico" "1"
-    ui_print "- Haptic driver 2 selected"
-else
-    cleanup_n_update "aghisna.haptica" "1"
-    ui_print "- Haptic driver not selected, default option 1"
-    ui_print "- if u faced with haptic try change option"
-fi
-
-
-##### panel low high dimen
-if [ ! -z "$(cat /data/local/aghisna | grep OSS )" ];then
-    cleanup_n_update "aghisna.dimen" "0"
-    ui_print "- oss panel selected"
-elif [ ! -z "$(cat /data/local/aghisna | grep MIUI )" ];then
-    cleanup_n_update "aghisna.dimen" "1"
-    ui_print "- miui panel selected"
-else
-    cleanup_n_update "aghisna.dimen" "0"
-    ui_print "- panel dimens not selected, default option oss"
-fi
-
-###### 90hz goes bug
-if [ ! -z "$(cat /data/local/aghisna | grep 90HZ )" ];then
-    cleanup_n_update "aghisna.fps" "1"
-    ui_print "- Enable 90HZ option (120~90) bug!"
-else
-    cleanup_n_update "aghisna.fps" "0"
-fi
-
-###### kernelSU
-if [ ! -z "$(cat /data/local/aghisna | grep NSU )" ];then
-    cleanup_n_update "aghisna.ksu" "0"
-    cleanup_n_update "aghisna.su" "0"
-    ui_print "- Disable kernelSU prebuilt"
-else
-    cleanup_n_update "aghisna.ksu" "1"
-    cleanup_n_update "aghisna.su" "1"
-fi
-
-###### Proxymity virtual shit
-if [ ! -z "$(cat /data/local/aghisna | grep NPS )" ];then
-    cleanup_n_update "aghisna.nps" "0"
-    ui_print "- Disable proximity sensor"
-else
-    cleanup_n_update "aghisna.nps" "1"
-fi
-
-# I know you're reading this, so what's your point here?
-# let's do something interesting
-
-# if [ ! -z "$(ls $home | grep "mie-" )" ];then
-#     if [ -f $home/mie-kuah ] && [ ! -z "$(cat /data/local/aghisna | grep BQ )" ];then
-#        cp -af $home/mie-kuah $home/dtbo.img;
-#        ui_print "- BQ2597x and PMIC driver charger selected";
-#    elif [ -f $home/mie-ayam ] && [ ! -z "$(cat /data/local/aghisna | grep LN )" ];then
-#        cp -af $home/mie-ayam $home/dtbo.img;
-#        ui_print "- LN8000 driver charger selected";
-#    else
-#        cp -af $home/mie-kuah $home/dtbo.img;
-#        ui_print "- charger driver not apply, BQ/PMIC default";
-#    fi
-#    rm -rf $home/mie-*;
-# fi
-
-## pembersih
-rm -rf /data/local/aghisna;
-
-write_boot;
 ## end boot install
 
 
-# shell variables
-#block=vendor_boot;
-#is_slot_device=1;
-#ramdisk_compression=auto;
-#patch_vbmeta_flag=auto;
+## init_boot files attributes
+#init_boot_attributes() {
+#set_perm_recursive 0 0 755 644 $RAMDISK/*;
+#set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
+#} # end attributes
+
+# init_boot shell variables
+#BLOCK=init_boot;
+#IS_SLOT_DEVICE=1;
+#RAMDISK_COMPRESSION=auto;
+#PATCH_VBMETA_FLAG=auto;
+
+# reset for init_boot patching
+#reset_ak;
+
+# init_boot install
+#dump_boot; # unpack ramdisk since it is the new first stage init ramdisk where overlay.d must go
+
+#write_boot;
+## end init_boot install
+
+
+## vendor_kernel_boot shell variables
+#BLOCK=vendor_kernel_boot;
+#IS_SLOT_DEVICE=1;
+#RAMDISK_COMPRESSION=auto;
+#PATCH_VBMETA_FLAG=auto;
+
+# reset for vendor_kernel_boot patching
+#reset_ak;
+
+# vendor_kernel_boot install
+#split_boot; # skip unpack/repack ramdisk, e.g. for dtb on devices with hdr v4 and vendor_kernel_boot
+
+#flash_boot;
+## end vendor_kernel_boot install
+
+
+## vendor_boot files attributes
+#vendor_boot_attributes() {
+#set_perm_recursive 0 0 755 644 $RAMDISK/*;
+#set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
+#} # end attributes
+
+# vendor_boot shell variables
+#BLOCK=vendor_boot;
+#IS_SLOT_DEVICE=1;
+#RAMDISK_COMPRESSION=auto;
+#PATCH_VBMETA_FLAG=auto;
 
 # reset for vendor_boot patching
 #reset_ak;
 
+# vendor_boot install
+#dump_boot; # use split_boot to skip ramdisk unpack, e.g. for dtb on devices with hdr v4 but no vendor_kernel_boot
 
-## AnyKernel vendor_boot install
-#split_boot; # skip unpack/repack ramdisk since we don't need vendor_ramdisk access
-
-#flash_boot;
+#write_boot; # use flash_boot to skip ramdisk repack, e.g. for dtb on devices with hdr v4 but no vendor_kernel_boot
 ## end vendor_boot install
+
+
 
 
