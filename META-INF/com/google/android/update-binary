@@ -294,7 +294,6 @@ abort() {
 do_devicecheck() {
   [ "$(file_getprop anykernel.sh do.devicecheck)" == 1 ] || return 1;
   local device devicename match product testname vendordevice vendorproduct;
-  ui_print "Checking device...";
   device=$(getprop ro.product.device 2>/dev/null);
   product=$(getprop ro.build.product 2>/dev/null);
   vendordevice=$(getprop ro.product.vendor.device 2>/dev/null);
@@ -302,14 +301,14 @@ do_devicecheck() {
   for testname in $(grep '^device.name.*=' anykernel.sh | cut -d= -f2-); do
     for devicename in $device $product $vendordevice $vendorproduct; do
       if [ "$devicename" == "$testname" ]; then
-        ui_print "$testname" " ";
+        ui_print "Device Name =" "$testname" "[OK]";
         match=1;
         break 2;
       fi;
     done;
   done;
   if [ ! "$match" ]; then
-    abort " " "Unsupported device. Aborting...";
+    abort "Device Name = [FAILED]";
   fi;
 }
 int2ver() {
@@ -324,7 +323,6 @@ int2ver() {
 do_versioncheck() {
   [ "$(file_getprop anykernel.sh supported.versions)" ] || return 1;
   local android_ver hi_ver lo_ver parsed_ver supported supported_ver;
-  ui_print "Checking Android version...";
   supported_ver=$(file_getprop anykernel.sh supported.versions | tr -d '[:space:]');
   android_ver=$(file_getprop /system/build.prop ro.build.version.release);
   parsed_ver=$(int2ver $android_ver);
@@ -343,9 +341,9 @@ do_versioncheck() {
     done;
   fi;
   if [ "$supported" ]; then
-    ui_print "$android_ver" " ";
+    ui_print "Android Version =" "$android_ver" "[OK] ";
   else
-    abort " " "Unsupported Android version. Aborting...";
+    abort "Android Version =" "[FAILED]";
   fi;
 }
 do_levelcheck() {
@@ -546,16 +544,7 @@ if [ -f banner ]; then
   ui_print " " " ";
 fi;
 
-KERNEL_STRING="$(file_getprop anykernel.sh kernel.string)";
-ui_print "$KERNEL_STRING";
-if [ -f version ]; then
-  ui_print " ";
-  ui_printfile version;
-  ui_print " ";
-fi;
-ui_print " " "AnyKernel3 by osm0sis @ xda-developers" " ";
 grep -oE 'AK_BASE.*' META-INF/com/google/android/updater-script >&2;
-ui_print " ";
 
 setup_env;
 
@@ -564,7 +553,6 @@ do_versioncheck;
 do_levelcheck;
 do_vendorlevelcheck;
 
-ui_print "Installing...";
 # hack to maintain support for anykernel.sh files that weren't updated correctly along with the AK core
 CORE=$(grep -oE 'ak.*core.sh' anykernel.sh);
 [ -f tools/$CORE ] || ln -s $AKHOME/tools/ak*-core.sh $AKHOME/tools/$CORE;
@@ -583,6 +571,5 @@ if [ "$(file_getprop anykernel.sh do.cleanup)" == 1 ]; then
   cleanup;
 fi;
 
-ui_print " " "Done!";
 export PATH="$OLD_PATH";
 unset OLD_PATH OUTFD ZIPFILE;
