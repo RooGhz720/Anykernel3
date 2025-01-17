@@ -73,6 +73,13 @@ cleanup_n_update() {
         patch_cmdline "$Yaitu" "$Yaitu=$Isinya"
     fi
 }
+
+# tambahan hehe
+if [ ! -z "$(cat /data/local/aghisna | grep AGHISNA )" ];then
+    ui_print "*custom config detected*"
+
+fi
+
 # hayoh mau ngapain?
 ###### kernelSU
 if [ ! -z "$(cat /data/local/aghisna | grep NSU )" ];then
