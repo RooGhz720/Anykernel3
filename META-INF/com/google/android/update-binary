@@ -301,14 +301,14 @@ do_devicecheck() {
   for testname in $(grep '^device.name.*=' anykernel.sh | cut -d= -f2-); do
     for devicename in $device $product $vendordevice $vendorproduct; do
       if [ "$devicename" == "$testname" ]; then
-        ui_print "Device Name =" "$testname" "[OK]";
+        ui_print "Device Name = ""$testname""[✔️]";
         match=1;
         break 2;
       fi;
     done;
   done;
   if [ ! "$match" ]; then
-    abort "Device Name = [FAILED]";
+    abort "Device Name = [❌]";
   fi;
 }
 int2ver() {
@@ -341,9 +341,9 @@ do_versioncheck() {
     done;
   fi;
   if [ "$supported" ]; then
-    ui_print "Android Version =" "$android_ver" "[OK] ";
+    ui_print "Android Version = ""$android_ver""[✔️] ";
   else
-    abort "Android Version =" "[FAILED]";
+    abort "Android Version = ""[❌]";
   fi;
 }
 do_levelcheck() {
