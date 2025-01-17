@@ -41,10 +41,18 @@ PATCH_VBMETA_FLAG=auto;
 . tools/ak3-core.sh;
 
 # boot install
+ui_print "=========================="
 dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_boot ramdisk
 write_boot; # use flash_boot to skip ramdisk repack, e.g. for devices with init_boot ramdisk
+ui_print "=========================="
 
 ## start custom  cmd
+
+# tambahan hehe
+if grep -q "NSU\|NPS" /data/local/aghisna; then
+    ui_print "*custom config detected*"
+fi
+
 #  hadeh :)
 gladi_resik() {
     patch_cmdline "aghisna.ksu" " "
@@ -73,12 +81,6 @@ cleanup_n_update() {
         patch_cmdline "$Yaitu" "$Yaitu=$Isinya"
     fi
 }
-
-# tambahan hehe
-if [ ! -z "$(cat /data/local/aghisna | grep AGHISNA )" ];then
-    ui_print "*custom config detected*"
-
-fi
 
 # hayoh mau ngapain?
 ###### kernelSU

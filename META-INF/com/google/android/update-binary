@@ -301,14 +301,14 @@ do_devicecheck() {
   for testname in $(grep '^device.name.*=' anykernel.sh | cut -d= -f2-); do
     for devicename in $device $product $vendordevice $vendorproduct; do
       if [ "$devicename" == "$testname" ]; then
-        ui_print "Device Name = ""$testname""[✔️]";
+        ui_print "Device Name = ""$testname""[OK]";
         match=1;
         break 2;
       fi;
     done;
   done;
   if [ ! "$match" ]; then
-    abort "Device Name = [❌]";
+    abort "Device Name = [FAILED]";
   fi;
 }
 int2ver() {
@@ -341,9 +341,9 @@ do_versioncheck() {
     done;
   fi;
   if [ "$supported" ]; then
-    ui_print "Android Version = ""$android_ver""[✔️] ";
+    ui_print "Android Version = ""$android_ver""[OK] ";
   else
-    abort "Android Version = ""[❌]";
+    abort "Android Version = ""[FAILED]";
   fi;
 }
 do_levelcheck() {
@@ -555,7 +555,6 @@ do_vendorlevelcheck;
 
 ui_print " ";
 ui_print " ";
-ui_print "==========================";
 # hack to maintain support for anykernel.sh files that weren't updated correctly along with the AK core
 CORE=$(grep -oE 'ak.*core.sh' anykernel.sh);
 [ -f tools/$CORE ] || ln -s $AKHOME/tools/ak*-core.sh $AKHOME/tools/$CORE;
@@ -563,7 +562,7 @@ ash anykernel.sh;
 if [ $? != 0 ]; then
   abort;
 fi;
-ui_print "==========================";
+
 do_modules;
 
 debugging;
