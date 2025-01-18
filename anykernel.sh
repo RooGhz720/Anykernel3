@@ -15,22 +15,6 @@ supported.versions=11 - 15
 supported.patchlevels=
 '; } # end properties
 
-# magisk detector
-if [ -e /data/adb/magisk.db ]; then
-    ui_print "Magisk installed, you can disable KernelSU by adding 'NSU' to avoid conflict."
-    ui_print "Installation aborted due to potential conflict."
-    exit 1
-else
-    ui_print "Magisk not detected. Proceeding with installation..."
-fi
-
-### AnyKernel install
-## boot files attributes
-boot_attributes() {
-set_perm_recursive 0 0 755 644 $RAMDISK/*;
-set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
-} # end attributes
-
 # boot shell variables
 BLOCK=auto;
 IS_SLOT_DEVICE=0;
@@ -40,17 +24,20 @@ PATCH_VBMETA_FLAG=auto;
 # import functions/variables and setup patching - see for reference (DO NOT REMOVE)
 . tools/ak3-core.sh;
 
+### AnyKernel install
+## boot files attributes
+boot_attributes() {
+set_perm_recursive 0 0 755 644 $RAMDISK/*;
+set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
+} # end attributes
+
 # boot install
-ui_print "=========================="
 dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_boot ramdisk
-write_boot; # use flash_boot to skip ramdisk repack, e.g. for devices with init_boot ramdisk
-ui_print "=========================="
 
-## start custom  cmd
-
-# tambahan hehe
-if grep -q "NSU\|NPS" /data/local/aghisna; then
-    ui_print "*custom config detected*"
+# magisk detector
+if [ -e /data/adb/magisk.db ]; then
+    ui_print "Magisk installed, you can disable KernelSU by adding 'NSU' to avoid conflict!"
+    exit 1
 fi
 
 #  hadeh :)
@@ -58,6 +45,9 @@ gladi_resik() {
     patch_cmdline "aghisna.ksu" " "
     patch_cmdline "aghisna.nps" " "
     patch_cmdline "aghisna.su" " "
+    patch_cmdline "aghisna.dimen" " "
+    patch_cmdline "aghisna.haptica" " "
+    patch_cmdline "aghisna.fps" " "
 }
 # ho ho hooo looks like you are looking for something '-'
 # I guess for sure you find out about what is below, right?  '-'
@@ -87,7 +77,7 @@ cleanup_n_update() {
 if [ ! -z "$(cat /data/local/aghisna | grep NSU )" ];then
     cleanup_n_update "aghisna.ksu" "0"
     cleanup_n_update "aghisna.su" "0"
-    ui_print "- Disable kernelSU = u gay"
+    ui_print "- Disable kernelSU"
 else
     cleanup_n_update "aghisna.ksu" "1"
     cleanup_n_update "aghisna.su" "1"
@@ -103,6 +93,13 @@ fi
 
 ## pembersih
 rm -rf /data/local/aghisna;
+
+write_boot; # use flash_boot to skip ramdisk repack, e.g. for devices with init_boot ramdisk
+ui_print "=========================="
+
+## start custom  cmd
+
+ui_print " "
 
 ## end boot install
 
