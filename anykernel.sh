@@ -45,9 +45,6 @@ gladi_resik() {
     patch_cmdline "aghisna.ksu" " "
     patch_cmdline "aghisna.nps" " "
     patch_cmdline "aghisna.su" " "
-    patch_cmdline "aghisna.dimen" " "
-    patch_cmdline "aghisna.haptica" " "
-    patch_cmdline "aghisna.fps" " "
 }
 # ho ho hooo looks like you are looking for something '-'
 # I guess for sure you find out about what is below, right?  '-'
