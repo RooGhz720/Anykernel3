@@ -11,7 +11,7 @@ do.cleanup=1
 do.cleanuponabort=0
 device.name1=sweet
 device.name2=sweetin
-supported.versions=11 - 14
+supported.versions=11 - 13
 supported.patchlevels=
 '; } # end properties
 
@@ -37,6 +37,9 @@ dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_b
 # magisk detector
 if [ -e /data/adb/magisk.db ]; then
     ui_print "Magisk installed, you can disable KernelSU by adding 'NSU' to avoid conflict!"
+    ui_print "backup your modules, use stock kernel without magisk patch then delete adb folder"
+    ui_print "/data/adb < delete this"
+    ui_print "instalation terminated!"
     exit 1
 fi
 
