@@ -563,7 +563,7 @@ ash anykernel.sh;
 if [ $? != 0 ]; then
   abort;
 fi;
-
+ui_print " ";
 do_modules;
 
 debugging;

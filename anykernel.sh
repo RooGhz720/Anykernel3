@@ -34,12 +34,8 @@ set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
 # boot install
 dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_boot ramdisk
 
-# magisk detector
-if [ -e /data/adb/magisk.db ]; then
-    ui_print "Magisk installed, you can disable KernelSU by adding 'NSU' to avoid conflict!"
-    ui_print "backup your modules, use stock kernel without magisk patch then delete adb folder"
-    ui_print "/data/adb < delete this"
-    ui_print "instalation terminated!"
+if [ -d /data/data/com.miui* ]; then
+    ui_print "MIUI detected! installations aborted"
     exit 1
 fi
 
@@ -71,6 +67,15 @@ cleanup_n_update() {
         patch_cmdline "$Yaitu" "$Yaitu=$Isinya"
     fi
 }
+
+# magisk detector
+if [ -e /data/adb/magisk.db ]; then
+    ui_print "Magisk detected!"
+    ui_print "switch to NSU..."
+    cleanup_n_update "aghisna.ksu" "0"
+    cleanup_n_update "aghisna.su" "0"
+    ui_print "done."
+fi
 
 # hayoh mau ngapain?
 ###### kernelSU
