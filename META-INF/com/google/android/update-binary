@@ -347,12 +347,10 @@ do_versioncheck() {
   fi;
 }
 do_miuicheck() {
-  ui_print "...";
   local miui_detected
   if [ "$(file_getprop /system/build.prop ro.miui.ui.version.name)" ] || \
      [ "$(file_getprop /system/build.prop ro.miui.build.version)" ] || \
      [ -d /data/data/com.miui.msa ] || \
-     [ -d /system/etc/miui ] || \
      [ -f /system/build.prop ] && grep -q "ro.miui" /system/build.prop; then
     miui_detected=1
   fi
