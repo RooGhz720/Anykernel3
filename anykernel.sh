@@ -33,7 +33,7 @@ set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
 
 # boot install
 dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_boot ramdisk
-
+ui_print " "
 #  hadeh :)
 gladi_resik() {
     patch_cmdline "aghisna.ksu" " "
@@ -77,7 +77,6 @@ fi
 if [ ! -z "$(cat /data/local/aghisna | grep NSU )" ];then
     cleanup_n_update "aghisna.ksu" "0"
     cleanup_n_update "aghisna.su" "0"
-    ui_print ""
     ui_print "- Disable kernelSU"
 else
     cleanup_n_update "aghisna.ksu" "1"
@@ -87,7 +86,6 @@ fi
 ###### Proxymity virtual shit
 if [ ! -z "$(cat /data/local/aghisna | grep NPS )" ];then
     cleanup_n_update "aghisna.nps" "0"
-    ui_print ""
     ui_print "- Disable virtual proximity"
 else
     cleanup_n_update "aghisna.nps" "1"
