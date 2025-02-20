@@ -346,6 +346,23 @@ do_versioncheck() {
     abort "Android Version = ""[FAILED]";
   fi;
 }
+do_miuicheck() {
+  ui_print "...";
+  local miui_detected
+  if [ "$(file_getprop /system/build.prop ro.miui.ui.version.name)" ] || \
+     [ "$(file_getprop /system/build.prop ro.miui.build.version)" ] || \
+     [ -d /data/data/com.miui.msa ] || \
+     [ -d /system/etc/miui ] || \
+     [ -f /system/build.prop ] && grep -q "ro.miui" /system/build.prop; then
+    miui_detected=1
+  fi
+
+  if [ "$miui_detected" ]; then
+    abort "MIUI detected! Installation aborted.";
+  else
+    ui_print "AOSP [OK]";
+  fi;
+}
 do_levelcheck() {
   [ "$(file_getprop anykernel.sh supported.patchlevels)" ] || return 1;
   local android_lvl hi_lvl lo_lvl parsed_lvl supported_lvl;
@@ -550,6 +567,7 @@ setup_env;
 
 do_devicecheck;
 do_versioncheck;
+do_miuicheck;
 do_levelcheck;
 do_vendorlevelcheck;
 
