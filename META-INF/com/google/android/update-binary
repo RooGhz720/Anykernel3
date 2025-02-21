@@ -346,21 +346,22 @@ do_versioncheck() {
     abort "Android Version = ""[FAILED]";
   fi;
 }
-do_miuicheck() {
-  local miui_detected
-  if [ "$(file_getprop /system/build.prop ro.miui.ui.version.name)" ] || \
-     [ "$(file_getprop /system/build.prop ro.miui.build.version)" ] || \
-     [ -d /data/data/com.miui.msa ] || \
-     [ -f /system/build.prop ] && grep -q "ro.miui" /system/build.prop; then
-    miui_detected=1
+dolineagecheck() {
+  local lineage_detected
+  if [ "$(file_getprop /system/build.prop ro.lineage.version)" ] || \
+     [ "$(file_getprop /system/build.prop ro.lineage.build.version)" ] || \
+     [ "$(file_getprop /system/build.prop ro.modversion)" ] || \
+     [ -f /system/build.prop ] && grep -q "lineage" /system/build.prop; then
+    lineage_detected=1
   fi
 
-  if [ "$miui_detected" ]; then
-    abort "MIUI detected! Installation aborted.";
+  if [ "$lineage_detected" ]; then
+    ui_print "you are using AOSP! good choice.";
   else
-    ui_print "AOSP [OK]";
+    abort "Non-LineageOS ROM detected! Installation aborted.";
   fi;
 }
+
 do_levelcheck() {
   [ "$(file_getprop anykernel.sh supported.patchlevels)" ] || return 1;
   local android_lvl hi_lvl lo_lvl parsed_lvl supported_lvl;
@@ -565,7 +566,7 @@ setup_env;
 
 do_devicecheck;
 do_versioncheck;
-do_miuicheck;
+dolineagecheck;
 do_levelcheck;
 do_vendorlevelcheck;
 
