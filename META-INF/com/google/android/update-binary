@@ -349,6 +349,7 @@ do_versioncheck() {
 dolineagecheck() {
   local lineage_detected
   if [ "$(file_getprop /system/build.prop ro.lineage.device)" ] || \
+     [ "$(file_getprop /system/build.prop ro.nad.device)" ] || \
      [ -f /system/build.prop ] && grep -q "lineage" /system/build.prop; then
     lineage_detected=1
   fi
