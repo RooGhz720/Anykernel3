@@ -346,6 +346,22 @@ do_versioncheck() {
     abort "Android Version = ""[FAILED]";
   fi;
 }
+do_miuiCheck() {
+  local miui_detected
+  if [ "$(file_getprop /system/build.prop ro.miui.ui.version.name)" ] || \
+     [ "$(file_getprop /system/build.prop ro.miui.build.version)" ] || \
+     [ -f /system/build.prop ] && grep -qi "miui" /system/build.prop || \
+     [ -d /data/data/com.miui.msa ]; then
+    miui_detected=1
+  fi
+
+  if [ "$miui_detected" ]; then
+    ui_print "MIUI detected! Proceed with caution.";
+  else
+    ui_print "Non-MIUI ROM detected!";
+  fi;
+}
+
 do_levelcheck() {
   [ "$(file_getprop anykernel.sh supported.patchlevels)" ] || return 1;
   local android_lvl hi_lvl lo_lvl parsed_lvl supported_lvl;
@@ -550,6 +566,7 @@ setup_env;
 
 do_devicecheck;
 do_versioncheck;
+do_miuiCheck;
 do_levelcheck;
 do_vendorlevelcheck;
 
