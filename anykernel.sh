@@ -39,6 +39,7 @@ gladi_resik() {
     patch_cmdline "aghisna.ksu" " "
     patch_cmdline "aghisna.nps" " "
     patch_cmdline "aghisna.su" " "
+    patch_cmdline "aghisna.sus" " "
 }
 # ho ho hooo looks like you are looking for something '-'
 # I guess for sure you find out about what is below, right?  '-'
@@ -83,6 +84,14 @@ else
     cleanup_n_update "aghisna.su" "1"
 fi
 
+###### Big susu of sus
+if [ ! -z "$(cat /data/local/aghisna | grep SUS )" ];then
+    cleanup_n_update "aghisna.sus" "1"
+    ui_print "- Enable SusFs"
+else
+    cleanup_n_update "aghisna.sus" "0"
+fi
+
 ###### Proxymity virtual shit
 if [ ! -z "$(cat /data/local/aghisna | grep NPS )" ];then
     cleanup_n_update "aghisna.nps" "0"
@@ -102,5 +111,4 @@ ui_print "=========================="
 ui_print " "
 
 ## end boot install
-
 
