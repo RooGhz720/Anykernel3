@@ -102,7 +102,7 @@ else
 fi
 
 ###### kcal
-if [ ! -z "$(cat /data/local/aghisna | grep NKCL )" ];then
+if [ ! -z "$(cat /data/local/aghisna | grep KCL )" ];then
     cleanup_n_update "aghisna.kcal" "1"
     ui_print "- Enable Kcal display"
 else
