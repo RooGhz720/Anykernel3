@@ -40,6 +40,7 @@ gladi_resik() {
     patch_cmdline "aghisna.nps" " "
     patch_cmdline "aghisna.su" " "
     patch_cmdline "aghisna.sus" " "
+    patch_cmdline "aghisna.kcal" " "
 }
 # ho ho hooo looks like you are looking for something '-'
 # I guess for sure you find out about what is below, right?  '-'
@@ -98,6 +99,14 @@ if [ ! -z "$(cat /data/local/aghisna | grep NPS )" ];then
     ui_print "- Disable virtual proximity"
 else
     cleanup_n_update "aghisna.nps" "1"
+fi
+
+###### kcal
+if [ ! -z "$(cat /data/local/aghisna | grep NKCL )" ];then
+    cleanup_n_update "aghisna.kcal" "1"
+    ui_print "- Enable Kcal display"
+else
+    cleanup_n_update "aghisna.kcal" "0"
 fi
 
 ## pembersih
