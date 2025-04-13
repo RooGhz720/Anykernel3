@@ -357,7 +357,7 @@ dolineagecheck() {
   if [ "$lineage_detected" ]; then
     ui_print "you are using AOSP! good choice.";
   else
-    abort "Non-LineageOS ROM detected! Installation aborted.";
+    ui_print "MiUI detected, bug will comes....";
   fi;
 }
 
