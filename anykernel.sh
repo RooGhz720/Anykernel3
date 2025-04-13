@@ -11,7 +11,7 @@ do.cleanup=1
 do.cleanuponabort=0
 device.name1=sweet
 device.name2=sweetin
-supported.versions=11 - 15
+supported.versions=13 - 16
 supported.patchlevels=
 '; } # end properties
 
@@ -39,7 +39,6 @@ gladi_resik() {
     patch_cmdline "aghisna.ksu" " "
     patch_cmdline "aghisna.nps" " "
     patch_cmdline "aghisna.su" " "
-    patch_cmdline "aghisna.sus" " "
     patch_cmdline "aghisna.kcal" " "
 }
 # ho ho hooo looks like you are looking for something '-'
@@ -83,14 +82,6 @@ if [ ! -z "$(cat /data/local/aghisna | grep NSU )" ];then
 else
     cleanup_n_update "aghisna.ksu" "1"
     cleanup_n_update "aghisna.su" "1"
-fi
-
-###### Big susu of sus
-if [ ! -z "$(cat /data/local/aghisna | grep SUS )" ];then
-    cleanup_n_update "aghisna.sus" "1"
-    ui_print "- Enable SusFs"
-else
-    cleanup_n_update "aghisna.sus" "0"
 fi
 
 ###### Proxymity virtual shit
