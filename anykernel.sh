@@ -11,7 +11,7 @@ do.cleanup=1
 do.cleanuponabort=0
 device.name1=sweet
 device.name2=sweetin
-supported.versions=13 - 16
+supported.versions=14 - 16
 supported.patchlevels=
 '; } # end properties
 
