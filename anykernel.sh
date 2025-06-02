@@ -67,21 +67,19 @@ cleanup_n_update() {
 # magisk detector
 if [ -e /data/adb/magisk.db ]; then
     ui_print "Magisk detected!"
-    ui_print "switch to NSU..."
-    cleanup_n_update "aghisna.ksu" "0"
+    ui_print "switching to NSU..."
     cleanup_n_update "aghisna.su" "0"
-    ui_print "done."
+    ui_print "done. pls delete /data/adb folder if error"
 fi
 
 # hayoh mau ngapain?
 ###### kernelSU
 if [ ! -z "$(cat /data/local/aghisna | grep NSU )" ];then
-    cleanup_n_update "aghisna.ksu" "0"
     cleanup_n_update "aghisna.su" "0"
     ui_print "- Disable kernelSU"
 else
-    cleanup_n_update "aghisna.ksu" "1"
     cleanup_n_update "aghisna.su" "1"
+    ui_print "- Enable kernelsu"
 fi
 
 ###### Proxymity virtual shit
@@ -90,14 +88,16 @@ if [ ! -z "$(cat /data/local/aghisna | grep NPS )" ];then
     ui_print "- Disable virtual proximity"
 else
     cleanup_n_update "aghisna.nps" "1"
+    ui_print "- Enable virtual proxymity"
 fi
 
 ###### kcal
 if [ ! -z "$(cat /data/local/aghisna | grep KCL )" ];then
     cleanup_n_update "aghisna.kcal" "1"
-    ui_print "- Enable Kcal display"
+    ui_print "- Enable Kcal/klapse display"
 else
     cleanup_n_update "aghisna.kcal" "0"
+    ui_print "- Disable Kcal/klapse display"
 fi
 
 ## pembersih
